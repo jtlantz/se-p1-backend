@@ -1,8 +1,8 @@
 from django.urls import path
 
 from . import views
-
+app_name = 'api'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('oompa', views.second_page, name='second_page')
+    path('vendingMachine/<int:vending_id>', views.vendingMachine, name='vendingMachine'),
 ]

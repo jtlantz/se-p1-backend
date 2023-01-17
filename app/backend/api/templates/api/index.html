@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+
+
+{%if all_stock %}
+    <ul>
+        {% for stock in all_stock %}
+            <li>
+                {{ stock }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No stocks found.</p>
+{% endif %}
+
+</html>

@@ -14,6 +14,7 @@ class VendingMachine(models.Model):
         return f"""
         building: {self.building}, floor: {self.floor}, location: {self.location}
         """
+
     def __str__(self)->str:
         return self.__repr__()
 """
@@ -47,15 +48,14 @@ class Stock(models.Model):
     product_info = models.ForeignKey(Product, on_delete=models.CASCADE)
     #How much stock is currently in the vending machine
     quantity = models.IntegerField()
-
     def update_quantity(self, quantity:int):
         self.quantity = quantity
         self.save()
-
 
     def __repr__(self)->str:
         return f"""
         product_info: { {self.product_info} }, quantity: {self.quantity}, location: { {self.vending_machine} }
         """
+        
     def __str__(self)->str:
         return self.__repr__()

@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-
-
+{% extends "api/base.html" %}
+{% block content %}
 
 {%if all_stock %}
     <ul>
@@ -14,4 +13,4 @@
     <p>No stocks found.</p>
 {% endif %}
 
-</html>
+{% endblock %}

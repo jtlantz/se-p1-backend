@@ -7,8 +7,8 @@ from .models import *
 #------------------------Get things------------------------
 
 def index(request):
-    all_stock = Stock.objects.all()
-    context = {'all_stock': all_stock}
+    machines = VendingMachine.objects.all()
+    context = { "all_stock": machines }
     return render(request, 'api/index.html', context)
 
 

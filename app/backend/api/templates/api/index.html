@@ -7,21 +7,37 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
+                    {%if machines %}
+                    {% for machine in machines %}
                     <div class="card mb-5" style="border-radius: 15px;">
+                        <h5 class="text-camelcase text-center mb-5">
+                            Building: {{ machine.building }}
+                            Floor: {{ machine.floor }}
+                            Location: {{ machine.location }}
+                        </h1>
+
                         <body>
-                        {%if all_stock %}
+                            {% if machine.stock %}
+                            {% for stock in machine.stock %}
                             <ul>
-                                {% for stock in all_stock %}
-                                    <li>
-                                        {{ stock.product_info.name }}
-                                    </li>
-                                {% endfor %}
+                                <li>
+                                    name: {{ stock.product_info.name }}
+                                    quanitity: {{ stock.quantity }}
+                                </li>
                             </ul>
-                        {% else %}
-                            <p>No stocks found.</p>
-                        {% endif %}
-                        </body>
+                            {% endfor %}
+                            {% else %}
+                                <p>No stock found.</p>
+                            {% endif %}
+                            </body>
+                        </div>
+                    {% endfor %}
+                    
+                    {% else %}
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <p>No stocks found.</p>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

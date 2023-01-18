@@ -8,8 +8,17 @@ from .models import *
 
 def index(request):
     machines = VendingMachine.objects.all()
-    context = { "all_stock": machines }
-    return render(request, 'api/index.html', context)
+    stock_in_machine = [
+        {
+            "id": machine.id,
+            "building": machine.building,
+            "floor": machine.floor,
+            "location": machine.location, 
+            "stock": Stock.objects.filter(vending_machine=machine)
+        }
+        for machine in machines
+        ]
+    return render(request, 'api/index.html', {"machines": stock_in_machine})
 
 
 def vendingMachine(request, vending_id):

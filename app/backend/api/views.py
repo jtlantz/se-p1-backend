@@ -61,11 +61,17 @@ def addVendingMachine(request):
     if request.method == "GET":
         return render(request, 'api/addVendingMachine.html')
     elif request.method == "POST":
-        ...
+        building = request.POST.get("building")
+        floor = request.POST.get("floor")
+        location = request.POST.get("location")
+
+        new_vm = VendingMachine(building=building, floor=floor, location=location)
+        new_vm.save()
+        return vendingMachine(request, new_vm.id)
     else:
         #return a 405 error
         return HttpResponse("Method not allowed", status=405)
-        
+
 def addProduct(request):
     return HttpResponse("addProduct")
 

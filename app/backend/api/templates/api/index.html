@@ -1,5 +1,10 @@
 {% extends 'api/base.html' %}
 {% block content %}
+<style>
+    .card:hover{
+        box-shadow: 0 0 11px rgba(33,33,33,.2);
+    }
+</style>
 
 <section class="vh-100">
     <div class="d-flex align-items-center h-100">
@@ -9,30 +14,31 @@
                     <h2 class="text-uppercase text-center mb-5">All Vending Machines</h2>
                     {%if machines %}
                     {% for machine in machines %}
-                    <a href="/api/vendingMachine/view/{{ machine.id }}">
-                        <div class="card mb-5" style="border-radius: 15px;">
-                            <h5 class="text-camelcase text-center mb-5">
-                                Building: {{ machine.building }}
-                                Floor: {{ machine.floor }}
-                                Location: {{ machine.location }}
-                            </h1>
+                        <div class="card mb-5 position-relative" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h5 class="text-camelcase text-center mb-5">
+                                    Building: {{ machine.building }}
+                                    Floor: {{ machine.floor }}
+                                    Location: {{ machine.location }}
+                                </h1>
 
-                            <body>
-                                {% if machine.stock %}
-                                {% for stock in machine.stock %}
-                                <ul>
-                                    <li>
-                                        name: {{ stock.product_info.name }}
-                                        quanitity: {{ stock.quantity }}
-                                    </li>
-                                </ul>
-                                {% endfor %}
-                                {% else %}
-                                    <p>No stock found.</p>
-                                {% endif %}
-                            </body>
+                                <body>
+                                    {% if machine.stock %}
+                                    {% for stock in machine.stock %}
+                                    <ul>
+                                        <li>
+                                            name: {{ stock.product_info.name }}
+                                            quanitity: {{ stock.quantity }}
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    {% else %}
+                                        <p>No stock found.</p>
+                                    {% endif %}
+                                </body>
+                                <a href="/api/vendingMachine/view/{{ machine.id }}" class="stretched-link"></a>
+                            </div>
                         </div>
-                    </a>
                     {% endfor %}
                     
                     {% else %}

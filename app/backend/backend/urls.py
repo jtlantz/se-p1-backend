@@ -22,4 +22,4 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
-urlpatterns += staticfiles_urlpatterns()
+

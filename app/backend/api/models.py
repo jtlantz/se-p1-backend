@@ -10,13 +10,20 @@ class VendingMachine(models.Model):
     building = models.CharField(max_length=50)
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
+    
     def __repr__(self)->str:
+        return {
+            "id": self.id,
+            "building": self.building,
+            "floor": self.floor,
+            "location": self.location
+        }
+
+    def __str__(self)->str:
         return f"""
         building: {self.building}, floor: {self.floor}, location: {self.location}
         """
 
-    def __str__(self)->str:
-        return self.__repr__()
 """
 Each product, e.g. Snickers, Aquarius, etc... is defined here.
 This is indented to indicate the product that we have on hand in total
@@ -30,12 +37,17 @@ class Product(models.Model):
     on_hand = models.IntegerField(default=0)
 
     def __repr__(self)->str:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "on_hand": self.on_hand
+        }
+    
+    def __str__(self)->str:
         return f"""
         name: {self.name}, price: {self.price}, on_hand: {self.on_hand}
         """
-    
-    def __str__(self)->str:
-        return self.__repr__()
 """
 The stock is a association between the vending machine and the product
 The current stock on hand inside the vending machine is in this table
@@ -53,9 +65,14 @@ class Stock(models.Model):
         self.save()
 
     def __repr__(self)->str:
+        return {
+            "id": self.id,
+            "product_info": self.product_info,
+            "quantity": self.quantity,
+            "location": self.vending_machine
+        }
+        
+    def __str__(self)->str:
         return f"""
         product_info: { {self.product_info} }, quantity: {self.quantity}, location: { {self.vending_machine} }
         """
-        
-    def __str__(self)->str:
-        return self.__repr__()

@@ -1,16 +1,22 @@
-{% extends "api/base.html" %}
+{% extends 'api/base.html' %}
 {% block content %}
 
-{%if all_stock %}
-    <ul>
-        {% for stock in all_stock %}
-            <li>
-                {{ stock }}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No stocks found.</p>
-{% endif %}
+<section class="vh-200">
+    <div class='d-flex align-items-center justify-content-center'>
+        <body>
+        {%if all_stock %}
+            <ul>
+                {% for stock in all_stock %}
+                    <li>
+                        {{ stock }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No stocks found.</p>
+        {% endif %}
+        </body>
+    </div>
+</section>
 
 {% endblock %}

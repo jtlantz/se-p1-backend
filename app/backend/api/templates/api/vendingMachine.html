@@ -1,17 +1,36 @@
-<!DOCTYPE html>
+{% extends 'api/base.html' %}
+{% block content %}
 
+<section class="vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <h2 class="text-uppercase text-center mb-5">Vending Machine Contents</h2>
+                    <div class="card mb-5" style="border-radius: 15px;">
+                    {% if stock %}
+                        <ul>
+                        {% for item in stock %}
+                            <li class="mb-3">
+                                name: {{ item.product_info.name }}
+                                quantity: {{ item.quantity }}
+                                <!-- Button to update stock-->
+                                <a href="/api/stock/view/{{ item.id }}">
+                                    <button type="button" class="btn btn-secondary btn-sm">
+                                        Update Stock
+                                    </button>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No stock found</p>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-
-{%if all_stock %}
-    <ul>
-        {% for stock in all_stock %}
-            <li>
-                {{ stock }}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No stocks found.</p>
-{% endif %}
-
-</html>
+{% endblock %}

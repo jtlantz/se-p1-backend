@@ -9,28 +9,30 @@
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
                     {%if machines %}
                     {% for machine in machines %}
-                    <div class="card mb-5" style="border-radius: 15px;">
-                        <h5 class="text-camelcase text-center mb-5">
-                            Building: {{ machine.building }}
-                            Floor: {{ machine.floor }}
-                            Location: {{ machine.location }}
-                        </h1>
+                    <a href="/api/vendingMachine/view/{{ machine.id }}">
+                        <div class="card mb-5" style="border-radius: 15px;">
+                            <h5 class="text-camelcase text-center mb-5">
+                                Building: {{ machine.building }}
+                                Floor: {{ machine.floor }}
+                                Location: {{ machine.location }}
+                            </h1>
 
-                        <body>
-                            {% if machine.stock %}
-                            {% for stock in machine.stock %}
-                            <ul>
-                                <li>
-                                    name: {{ stock.product_info.name }}
-                                    quanitity: {{ stock.quantity }}
-                                </li>
-                            </ul>
-                            {% endfor %}
-                            {% else %}
-                                <p>No stock found.</p>
-                            {% endif %}
+                            <body>
+                                {% if machine.stock %}
+                                {% for stock in machine.stock %}
+                                <ul>
+                                    <li>
+                                        name: {{ stock.product_info.name }}
+                                        quanitity: {{ stock.quantity }}
+                                    </li>
+                                </ul>
+                                {% endfor %}
+                                {% else %}
+                                    <p>No stock found.</p>
+                                {% endif %}
                             </body>
                         </div>
+                    </a>
                     {% endfor %}
                     
                     {% else %}

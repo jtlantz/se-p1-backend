@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 
 from .models import *
 
-#------------------------Get things------------------------
+#------------------------Get/view things------------------------
 
 def index(request):
     machines = VendingMachine.objects.all()
@@ -24,10 +24,22 @@ def index(request):
 def vendingMachine(request, vending_id):
     vm = get_object_or_404(VendingMachine, id=vending_id)
     stock = Stock.objects.filter(vending_machine=vm)
-    return HttpResponse(stock)
+    context = {
+        "id": vm.id,
+        "stock": stock,
+    }
+    return render(request, 'api/vendingMachine.html', context)
+
+def allProducts(request):
+    products = Product.objects.all()
+    return render(request, 'api/allProducts.html', {"products": products})
 
 def product(request, product_id):
     return HttpResponse("product")
+
+def allStock(request):
+    stock = Stock.objects.all()
+    return render(request, 'api/allStock.html', {"stock": stock})
 
 def stock(request, stock_id):
     return HttpResponse("stock")

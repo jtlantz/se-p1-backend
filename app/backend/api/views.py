@@ -39,7 +39,7 @@ def product(request, product_id):
 
 def allStock(request):
     stock = Stock.objects.all()
-    return render(request, 'api/allStock.html', {"stock": stock})
+    return render(request, 'api/allStock.html', {"stocks": stock})
 
 def stock(request, stock_id):
     stock = get_object_or_404(Stock, id=stock_id)

@@ -7,30 +7,22 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
-                    {%if machines %}
-                    {% for machine in machines %}
-                    <a href="/api/vendingMachine/view/{{ machine.id }}">
+                    {%if stocks %}
+                    {% for stock in stocks %}
+                    <a href="/api/stock/view/{{ stock.id }}">
                         <div class="card mb-5" style="border-radius: 15px;">
-                            <h5 class="text-camelcase text-center mb-5">
-                                Building: {{ machine.building }}
-                                Floor: {{ machine.floor }}
-                                Location: {{ machine.location }}
-                            </h1>
-
-                            <body>
-                                {% if machine.stock %}
-                                {% for stock in machine.stock %}
-                                <ul>
-                                    <li>
-                                        name: {{ stock.product_info.name }}
-                                        quanitity: {{ stock.quantity }}
-                                    </li>
-                                </ul>
-                                {% endfor %}
-                                {% else %}
-                                    <p>No stock found.</p>
-                                {% endif %}
-                            </body>
+                            <ul>
+                                <li>Name: {{ stock.product_info.name }}</li>
+                                <li>Quantity: {{ stock.quantity }}</li>
+                                <li>Location:
+                                    <ul>
+                                        <li>Bld:{{ stock.vending_machine.building }}</li>
+                                        <li>Floor:{{ stock.vending_machine.floor }}</li>
+                                        <li>Room:{{ stock.vending_machine.location }}</li>
+                                    </ul>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </a>
                     {% endfor %}

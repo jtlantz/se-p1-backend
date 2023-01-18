@@ -9,22 +9,27 @@
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
                     {%if stocks %}
                     {% for stock in stocks %}
-                    <a href="/api/stock/view/{{ stock.id }}">
-                        <div class="card mb-5" style="border-radius: 15px;">
-                            <ul>
-                                <li>Name: {{ stock.product_info.name }}</li>
-                                <li>Quantity: {{ stock.quantity }}</li>
-                                <li>Location:
-                                    <ul>
-                                        <li>Bld:{{ stock.vending_machine.building }}</li>
-                                        <li>Floor:{{ stock.vending_machine.floor }}</li>
-                                        <li>Room:{{ stock.vending_machine.location }}</li>
-                                    </ul>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </a>
+                    
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <ul>
+                            <li>Name: {{ stock.product_info.name }}</li>
+                            <li>Quantity: {{ stock.quantity }}</li>
+                            <li>Location:
+                                <ul>
+                                    <li>Bld:{{ stock.vending_machine.building }}</li>
+                                    <li>Floor:{{ stock.vending_machine.floor }}</li>
+                                    <li>Room:{{ stock.vending_machine.location }}</li>
+                                </ul>
+                                </ul>
+                            </li>
+                        </ul>
+                        <a href="/api/stock/view/{{ stock.id }}">
+                            <button type="button" class="btn btn-secondary btn-sm">
+                                View Details
+                            </button>
+                        </a>
+                    </div>
+                    
                     {% endfor %}
                     
                     {% else %}

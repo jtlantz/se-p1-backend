@@ -1,0 +1,53 @@
+{% extends 'api/base.html' %}
+{% block content %}
+
+<section class="vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <h2 class="text-uppercase text-center mb-5">Details of Current Product</h2>
+                    {% if product %}
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <ul>
+                            <li>
+                                Product: {{ product.name }}
+                            </li>
+                            <li>
+                                Current stock on hand: {{ product.on_hand }}
+                            </li>
+                            <li>
+                                Price: {{ product.price }}
+                            </li>
+                            {% if locations %}
+                            <li>
+                                Locations:
+                                {% for location in locations %}
+                                <a href="/api/vendingMachine/view/{{location.id}}">
+                                    <ul>
+                                        <li>
+                                            Bld:{{ location.vending_machine.building }}
+                                        </li>
+                                        <li>
+                                            Floor:{{ location.vending_machine.floor }}
+                                        </li>
+                                        <li>
+                                            Room:{{ location.vending_machine.location }}
+                                        </li>
+                                    </ul>
+                                </a>
+                                {% endfor %}
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% else %}
+                    <p>No stock found</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

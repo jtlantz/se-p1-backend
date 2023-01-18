@@ -7,32 +7,20 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
-                    {%if machines %}
-                    {% for machine in machines %}
-                    <a href="/api/vendingMachine/view/{{ machine.id }}">
+                    {% if products %}
+                    {% for product in products %}
                         <div class="card mb-5" style="border-radius: 15px;">
-                            <h5 class="text-camelcase text-center mb-5">
-                                Building: {{ machine.building }}
-                                Floor: {{ machine.floor }}
-                                Location: {{ machine.location }}
-                            </h1>
-
-                            <body>
-                                {% if machine.stock %}
-                                {% for stock in machine.stock %}
-                                <ul>
-                                    <li>
-                                        name: {{ stock.product_info.name }}
-                                        quanitity: {{ stock.quantity }}
-                                    </li>
-                                </ul>
-                                {% endfor %}
-                                {% else %}
-                                    <p>No stock found.</p>
-                                {% endif %}
-                            </body>
+                            <ul>
+                                <li>Name: {{ product.name }}</li>
+                                <li>Price: {{product.price}}</li>
+                                <li>On Hand: {{product.on_hand}}</li>
+                            </ul>
+                            <a href="/api/product/view/{{ product.id }}">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    View Details
+                                </button>
+                            </a>
                         </div>
-                    </a>
                     {% endfor %}
                     
                     {% else %}

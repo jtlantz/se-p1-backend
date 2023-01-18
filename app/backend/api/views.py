@@ -35,7 +35,11 @@ def allProducts(request):
     return render(request, 'api/allProducts.html', {"products": products})
 
 def product(request, product_id):
-    return HttpResponse("product")
+    product = get_object_or_404(Product, id=product_id)
+    context = {"product": product}
+    #TODO: Find locations where this stock is at and display it as well
+    context["locations"] = {}
+    return render(request, 'api/product.html', context)
 
 def allStock(request):
     stock = Stock.objects.all()
@@ -54,8 +58,14 @@ def stock(request, stock_id):
 #------------------------Add things------------------------
 
 def addVendingMachine(request):
-    return HttpResponse("addVendingMachine")
-
+    if request.method == "GET":
+        return render(request, 'api/addVendingMachine.html')
+    elif request.method == "POST":
+        ...
+    else:
+        #return a 405 error
+        return HttpResponse("Method not allowed", status=405)
+        
 def addProduct(request):
     return HttpResponse("addProduct")
 

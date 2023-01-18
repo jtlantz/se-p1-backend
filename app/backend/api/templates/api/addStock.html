@@ -3,19 +3,31 @@
 
 <div class="container rounded bg-white mt-5 mb-5 pt-5">
     <h2>Add Stock to machine</h2>
-    <form enctype='multipart/form-data' method="post" action="/api/vendingMachine/add/"> {% csrf_token %}
+    <form enctype='multipart/form-data' method="post" action="/api/stock/add/"> {% csrf_token %}
+
         <div class="form-outline mb-4">
-            <input type="text" name="building" class="form-control form-control-lg" placeholder="Building" autofocus="" maxlength="50" required/>
+            <select id="vmid" name="vending_machine">
+                {% for vending_machine in vending_machines %}
+                <option value="{{vending_machine.id}}">bld: {{ vending_machine.building }} floor: {{ vending_machine.floor }} room: {{ vending_machine.location }}</option>
+                {% endfor %}
+            </select>
         </div>
+
         <div class="form-outline mb-4">
-            <input type="text" name="floor" class="form-control form-control-lg" placeholder="Floor number" maxlength="2" required/>
+            <select id="prod" name="product">
+                {% for product in products %}
+                <option value="{{product.id}}">{{product.name}}, price: {{product.price}}, on hand: {{product.on_hand}}</option>
+                {% endfor %}
+            </select>
         </div>
+
         <div class="form-outline mb-4">
-            <input type="text" name="location" class="form-control form-control-lg" placeholder="Location or Classroom" maxlength="50" required/>
+            <input type="text" name="quantity" class="form-control form-control-lg" placeholder="Quantity" maxlength="5" required/>
         </div>
+
         <div class="d-flex justify-content-center">
         <button type="submit"
-            class="btn btn-success btn-block btn-lg">Create Vending Machine</button>
+            class="btn btn-success btn-block btn-lg">Add to Vending Machine</button>
         </div>
     </form>
 </div>

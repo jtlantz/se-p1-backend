@@ -86,7 +86,25 @@ def addProduct(request):
         return HttpResponse("Method not allowed", status=405)
 
 def addStock(request):
-    return HttpResponse("addStock")
+    if request.method == "GET":
+        vm_id = 1
+        if request.GET.get("vending_machine_id") != None:
+            vm_id = request.GET.get("vending_machine_id")
+        all_vending_machines = VendingMachine.objects.all()
+        all_products = Product.objects.all()
+        return render(request, 'api/addStock.html', {"default_id": vm_id, 
+        "vending_machines": all_vending_machines, 
+        "products": all_products
+        })
+    elif request.method == "POST":
+        vm = get_object_or_404(VendingMachine, id=request.POST.get("vending_machine"))
+        prod = get_object_or_404(Product, id=request.POST.get("product"))
+        quantity = request.POST.get("quantity")
+        new_stock = Stock(vending_machine=vm, product_info=prod, quantity=quantity)
+        new_stock.save()
+        return stock(request, new_stock.id)
+    else:
+        return HttpResponse("Method not allowed", status=405)
 
 #------------------------Delete things------------------------
 
@@ -109,3 +127,7 @@ def updateProduct(request, product_id):
 
 def updateStock(request, stock_id):
     return HttpResponse("updateStock")
+
+#------------------------Utility------------------------
+def verifyProductNotInVendingMachine(product_id):
+    ...

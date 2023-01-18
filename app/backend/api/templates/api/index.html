@@ -1,21 +1,30 @@
 {% extends 'api/base.html' %}
 {% block content %}
 
-<section class="vh-200">
-    <div class='d-flex align-items-center justify-content-center'>
-        <body>
-        {%if all_stock %}
-            <ul>
-                {% for stock in all_stock %}
-                    <li>
-                        {{ stock }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No stocks found.</p>
-        {% endif %}
-        </body>
+<section class="vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <body>
+                        {%if all_stock %}
+                            <ul>
+                                {% for stock in all_stock %}
+                                    <li>
+                                        {{ stock.product_info.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No stocks found.</p>
+                        {% endif %}
+                        </body>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

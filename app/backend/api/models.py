@@ -1,4 +1,8 @@
 from django.db import models
+import json
+
+def packageJsonResponse(data:dict)->dict:
+    return json.dumps(data)
 
 """
 Each vending machine has a unique ID to identify the vending machine, this is auto generated
@@ -10,14 +14,14 @@ class VendingMachine(models.Model):
     building = models.CharField(max_length=50)
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
-    
+
     def __repr__(self)->str:
-        return {
+        return packageJsonResponse({
             "id": self.id,
             "building": self.building,
             "floor": self.floor,
             "location": self.location
-        }
+        })
 
     def __str__(self)->str:
         return f"""
@@ -37,12 +41,12 @@ class Product(models.Model):
     on_hand = models.IntegerField(default=0)
 
     def __repr__(self)->str:
-        return {
+        return packageJsonResponse({
             "id": self.id,
             "name": self.name,
             "price": self.price,
             "on_hand": self.on_hand
-        }
+        })
     
     def __str__(self)->str:
         return f"""
@@ -65,12 +69,12 @@ class Stock(models.Model):
         self.save()
 
     def __repr__(self)->str:
-        return {
+        return packageJsonResponse({
             "id": self.id,
-            "product_info": self.product_info,
             "quantity": self.quantity,
-            "location": self.vending_machine
-        }
+            "location": {self.vending_machine},
+            "product_info": {self.product_info}
+        })
         
     def __str__(self)->str:
         return f"""

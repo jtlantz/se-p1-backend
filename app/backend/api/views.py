@@ -99,6 +99,8 @@ def addStock(request):
     elif request.method == "POST":
         vm = get_object_or_404(VendingMachine, id=request.POST.get("vending_machine"))
         prod = get_object_or_404(Product, id=request.POST.get("product"))
+        if not verifyProductNotInVendingMachine(prod, vm):
+            return HttpResponse("Product already in vending machine", status=400)
         quantity = request.POST.get("quantity")
         new_stock = Stock(vending_machine=vm, product_info=prod, quantity=quantity)
         new_stock.save()
@@ -129,5 +131,16 @@ def updateStock(request, stock_id):
     return HttpResponse("updateStock")
 
 #------------------------Utility------------------------
-def verifyProductNotInVendingMachine(product_id):
-    ...
+"""
+Verifies if the current product is in the vending machine already
+args:
+    product: Product object
+    vending_machine: VendingMachine object
+returns:
+    True if the product IS NOT in the vending machine
+    False if the product IS in the vending machine
+"""
+def verifyProductNotInVendingMachine(product:Product, vending_machine:VendingMachine)->bool:
+    if Stock.objects.filter(product_info=product, vending_machine=vending_machine).exists():
+        return False
+    return True

@@ -1,0 +1,47 @@
+{% extends 'api/base.html' %}
+{% block content %}
+
+<section class="vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <h2 class="text-uppercase text-center mb-5">Details of Current Stock</h2>
+                    {% if stock %}
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <ul>
+                            <li>
+                                Product: {{ stock.product.name }}
+                            </li>
+                            <li>
+                                Quantity: {{ stock.quantity }}
+                            </li>
+                            <li>
+                                Price: {{ stock.product.price }}
+                            </li>
+                            <li>
+                                Location:
+                                <ul>
+                                    <li>
+                                        Bld:{{ stock.vending_machine.building }}
+                                    </li>
+                                    <li>
+                                        Floor:{{ stock.vending_machine.floor }}
+                                    </li>
+                                    <li>
+                                        Room:{{ stock.vending_machine.location }}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <p>No stock found</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

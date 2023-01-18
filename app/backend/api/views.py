@@ -111,10 +111,14 @@ def addStock(request):
 #------------------------Delete things------------------------
 
 def deleteVendingMachine(request, vending_id):
-    return HttpResponse("deleteVendingMachine")
+    vm = get_object_or_404(VendingMachine, id=vending_id)
+    vm.delete()
+    return index(request)
 
 def deleteProduct(request, product_id):
-    return HttpResponse("deleteProduct")
+    product = get_object_or_404(Product, id=product_id)
+    product.delete()
+    return index(request)
 
 def deleteStock(request, stock_id):
     stock = get_object_or_404(Stock, id=stock_id)

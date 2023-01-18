@@ -45,6 +45,13 @@
                     <p>No stock found</p>
                     {% endif %}
                 </div>
+                <div class="mb-4 text-center">
+                    <a href="/api/product/delete/{{product.id}}">
+                        <button type="button" class="btn btn-danger" title="Remove Product" onclick="return confirm('Are you sure?');">
+                            <span class="glyphicon glyphicon-trash">Remove Product</span>
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

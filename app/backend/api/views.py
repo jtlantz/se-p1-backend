@@ -73,7 +73,17 @@ def addVendingMachine(request):
         return HttpResponse("Method not allowed", status=405)
 
 def addProduct(request):
-    return HttpResponse("addProduct")
+    if request.method == "GET":
+        return render(request, 'api/addProduct.html')
+    elif request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        on_hand = request.POST.get("on_hand")
+        new_prod = Product(name=name, price=price, on_hand=on_hand)
+        new_prod.save()
+        return product(request, new_prod.id)
+    else:
+        return HttpResponse("Method not allowed", status=405)
 
 def addStock(request):
     return HttpResponse("addStock")

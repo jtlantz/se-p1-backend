@@ -42,7 +42,14 @@ def allStock(request):
     return render(request, 'api/allStock.html', {"stock": stock})
 
 def stock(request, stock_id):
-    return HttpResponse("stock")
+    stock = get_object_or_404(Stock, id=stock_id)
+    context = {"stock" : {
+        "id": stock.id,
+        "product": stock.product_info,
+        "vending_machine": stock.vending_machine,
+        "quantity": stock.quantity,
+    }}
+    return render(request, 'api/stock.html', context)
 
 #------------------------Add things------------------------
 

@@ -117,7 +117,9 @@ def deleteProduct(request, product_id):
     return HttpResponse("deleteProduct")
 
 def deleteStock(request, stock_id):
-    return HttpResponse("deleteStock")
+    stock = get_object_or_404(Stock, id=stock_id)
+    stock.delete()
+    return index(request)
 
 #------------------------Update things------------------------
 

@@ -26,6 +26,9 @@ def vendingMachine(request, vending_id):
     stock = Stock.objects.filter(vending_machine=vm)
     context = {
         "id": vm.id,
+        "building": vm.building,
+        "floor": vm.floor,
+        "location": vm.location,
         "stock": stock,
     }
     return render(request, 'api/vendingMachine.html', context)
@@ -128,6 +131,21 @@ def deleteStock(request, stock_id):
 #------------------------Update things------------------------
 
 def updateVendingMachine(request, vending_id):
+    #send form data to edit the vending machine
+    if request.method=="GET":
+        vm = get_object_or_404(VendingMachine, id=vending_id)
+        context = {
+            "id": vm.id,
+            "building": vm.building,
+            "floor": vm.floor,
+            "location": vm.location,
+        }
+        return render(request, 'api/updateVendingMachine.html', context)
+
+    elif request.method == "POST":
+        ...
+    else:
+        return HttpResponse("MEthod not allowed", status=405)
     return HttpResponse("updateVendingMachine")
 
 def updateProduct(request, product_id):

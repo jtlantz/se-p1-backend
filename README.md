@@ -1,4 +1,4 @@
-#Django Web Application for managing vending machines for Software Engineering Class
+# Django Web Application for managing vending machines for Software Engineering Class
 
 To run this project the user needs to have Docker and docker-compose installed
 
@@ -25,16 +25,16 @@ The following APIs are available, there is also a basic frontend framework imple
 
 The entire project uses *Django* and it's built in frameworks. The database for this project is postgresql, startup information can be found [here](docker-compose.yaml)
 
-#API Reference
+# API Reference
 
-##Viewing
+## Viewing
 
-###Homepage URL, displays all Vending Machines
+### Homepage URL, displays all Vending Machines
 ```http
 /api/
 ```
 
-###View specific Vending Machine
+### View specific Vending Machine
 ```html
 /api/vendingMachine/view/<int:vending_id>
 ```
@@ -42,12 +42,12 @@ The entire project uses *Django* and it's built in frameworks. The database for 
 |:----------|:------|:--------------------------------------|
 | `id`      | `int` | **Required**. Id of a vending machine |
 
-###View all products
+### View all products
 ```html
 /api/product/view/
 ```
 
-###View specific product
+### View specific product
 ```html
 /api/product/view/<int:product_id>
 ```
@@ -57,12 +57,12 @@ The entire project uses *Django* and it's built in frameworks. The database for 
 | `id`      | `int` | **Required**. Id of the product       |
 
 
-###View all Stock
+### View all Stock
 ```html
 /api/stock/view/
 ```
 
-###View specific stock item
+### View specific stock item
 ```html
 /api/stock/view/<int:stock_id>
 ```
@@ -72,24 +72,24 @@ The entire project uses *Django* and it's built in frameworks. The database for 
 | `id`      | `int` | **Required**. Id of a vending machine |
 
 
-##Creation
+## Creation
 
-###Get the page to add a new machine, not necessary if using API only
+### Get the page to add a new machine, not necessary if using API only
 ```html
 GET /api/vendingMachine/add/
 ```
 
-###Get the page to add a new product, not necessary if using API only
+### Get the page to add a new product, not necessary if using API only
 ```html
 GET /api/product/add/
 ```
 
-###Get the page to add a new stock, not necessary if using API only
+### Get the page to add a new stock, not necessary if using API only
 ```html
 GET /api/stock/add/
 ```
 
-###Add the vending machine
+### Add the vending machine
 ```html
 POST /api/vendingMachine/add/
 ```
@@ -99,7 +99,7 @@ POST /api/vendingMachine/add/
 | 'floor'   | `int` | **Required**. Floor for machine           |
 | 'location'| `str` | **Required**. Classroom or area of machine|
 
-###Add the new product
+### Add the new product
 ```html
 POST /api/product/add/
 ```
@@ -109,7 +109,7 @@ POST /api/product/add/
 | 'price'   |`float`| **Required**. The price of the product    |
 | 'on_hand' | `int` | **Required**. Amount of stock on hand     |
 
-###Add new stock
+### Add new stock
 ```html
 POST /api/stock/add/
 ```
@@ -122,25 +122,25 @@ POST /api/stock/add/
 
 
 
-##Updating
+## Updating
 
-###Get the page to update the vending machine
+### Get the page to update the vending machine
 ```html
 GET /api/vendingMachine/update/<int:vending_id>
 ```
 
-###Get the page to update the product
+### Get the page to update the product
 ```html
 GET /api/product/update/<int:product_id>
 ```
 
-###Get the page to update the stock
+### Get the page to update the stock
 ```html
 GET /api/stock/update/<int:stock_id>
 ```
 
 
-###Edit the Vending machine
+### Edit the Vending machine
 ```html
 POST /api/vendingMachine/update/<int:vending_id>
 ```
@@ -151,7 +151,7 @@ POST /api/vendingMachine/update/<int:vending_id>
 | 'location'| `str` | **Required**. Classroom or area of machine|
 
 
-###Edit the Product
+### Edit the Product
 ```html
 POST /api/product/update/<int:product_id>
 ```
@@ -161,7 +161,7 @@ POST /api/product/update/<int:product_id>
 | 'on_hand' | `int` | **Required**. Amount of stock on hand     |
 
 
-###Edit the stock
+### Edit the stock
 ```html
 POST /api/stock/update/<int:stock_id>
 ```
@@ -171,11 +171,11 @@ POST /api/stock/update/<int:stock_id>
 
 
 
-##Deleting
+## Deleting
 
 ***these will be changed to DELETE request later***
 
-###Delete Vending machine
+### Delete Vending machine
 ```html
 POST /api/vendingMachine/delete/<int:vending_id>
 ```
@@ -184,7 +184,7 @@ POST /api/vendingMachine/delete/<int:vending_id>
 | 'id'      | `int` | **Required**. ID of machine to delete |
 
 
-###Delete product
+### Delete product
 ```html
 POST /api/product/delete/<int:product_id>
 ```
@@ -193,11 +193,10 @@ POST /api/product/delete/<int:product_id>
 | 'id'      | `int` | **Required**. ID of product to delete  |
 
 
-###Delete stock
+### Delete stock
 ```html
 POST /api/stock/delete/<int:stock_id>
 ```
 | Parameter | Type  | Description                         |
 |:----------|:------|:------------------------------------|
 | 'id'      | `int` | **Required**. ID of stock to delete |
-

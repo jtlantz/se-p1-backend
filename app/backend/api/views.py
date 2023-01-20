@@ -129,6 +129,10 @@ def deleteStock(request, stock_id):
     return index(request)
 
 #------------------------Update things------------------------
+def notNullUpdateFormField(form_field, model_field):
+    if form_field != None or form_field != '':
+        model_field = form_field
+    return model_field
 
 def updateVendingMachine(request, vending_id):
     #send form data to edit the vending machine
@@ -143,10 +147,14 @@ def updateVendingMachine(request, vending_id):
         return render(request, 'api/updateVendingMachine.html', context)
 
     elif request.method == "POST":
-        ...
+        vm = get_object_or_404(VendingMachine, id=vending_id)
+        vm.building = notNullUpdateFormField(request.POST.get("building"), vm.building)
+        vm.floor = notNullUpdateFormField(request.POST.get("floor"), vm.floor)
+        vm.location = notNullUpdateFormField(request.POST.get("location"), vm.location)
+        vm.save()
+        return vendingMachine(request, vm.id)
     else:
         return HttpResponse("MEthod not allowed", status=405)
-    return HttpResponse("updateVendingMachine")
 
 def updateProduct(request, product_id):
     return HttpResponse("updateProduct")

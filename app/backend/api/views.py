@@ -153,7 +153,23 @@ def updateVendingMachine(request, vending_id):
         return HttpResponse("Method not allowed", status=405)
 
 def updateProduct(request, product_id):
-    return HttpResponse("updateProduct")
+    if request.method == "GET":
+        prod = get_object_or_404(Product, id=product_id)
+        context = {
+            "id": prod.id,
+            "name": prod.name,
+            "price": prod.price,
+            "on_hand": prod.on_hand,
+        }
+        return render(request, 'api/updateProduct.html', context)
+    elif request.method == "POST":
+        prod = get_object_or_404(Product, id=product_id)
+        prod.price = notNullUpdateFormField(request.POST.get("price"), prod.price)
+        prod.on_hand = notNullUpdateFormField(request.POST.get("on_hand"), prod.on_hand)
+        prod.save()
+        return product(request, prod.id)
+    else:
+        return HttpResponse("Method not allowed", status=405)
 
 def updateStock(request, stock_id):
     if request.method=="GET":

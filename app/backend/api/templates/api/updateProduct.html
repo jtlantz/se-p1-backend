@@ -1,0 +1,26 @@
+{% extends "api/base.html" %}
+{% block content %}
+
+<div class="container rounded bg-white mt-5 mb-5 pt-5">
+    <h2>Update Stock</h2>
+    <form enctype='multipart/form-data' method="post" action="/api/product/update/{{id}}"> {% csrf_token %}
+        <div class="text-center">
+            {{name}} 
+        </div>
+        <div class="form-outline mb-4">
+            Price:
+            <input type="text" name="price" class="form-control form-control-lg" value="{{price}}" maxlength="5" required/>
+        </div>
+        <div class="form-outline mb-4">
+            On Hand:
+            <input type="text" name="on_hand" class="form-control form-control-lg" value="{{on_hand}}" maxlength="5" required/>
+        </div>
+
+        <div class="d-flex justify-content-center">
+        <button type="submit"
+            class="btn btn-success btn-block btn-lg">Update Product</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

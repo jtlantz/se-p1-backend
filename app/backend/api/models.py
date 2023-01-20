@@ -15,7 +15,7 @@ class VendingMachine(models.Model):
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
 
-    def __repr__(self)->str:
+    def __repr__(self):
         return packageJsonResponse({
             "id": self.id,
             "building": self.building,
@@ -40,7 +40,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     on_hand = models.IntegerField(default=0)
 
-    def __repr__(self)->str:
+    def __repr__(self):
         return packageJsonResponse({
             "id": self.id,
             "name": self.name,
@@ -68,7 +68,7 @@ class Stock(models.Model):
         self.quantity = quantity
         self.save()
 
-    def __repr__(self)->str:
+    def __repr__(self):
         return packageJsonResponse({
             "id": self.id,
             "quantity": self.quantity,

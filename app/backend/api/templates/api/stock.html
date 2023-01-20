@@ -39,7 +39,15 @@
                     <p>No stock found</p>
                     {% endif %}
                 </div>
-                <div class="mb-4 text-center">
+                <div class="mb-1 text-center">
+                    <a href="/api/stock/update/{{stock.id}}">
+                        <button type="button" class="btn btn-secondary" title="Update Stock"">
+                            <span class="glyphicon">Update Stock</span>
+                        </button>
+                    </a>
+                </div>
+
+                <div class="mb-1 text-center">
                     <a href="/api/stock/delete/{{stock.id}}">
                         <button type="button" class="btn btn-danger" title="Remove Stock" onclick="return confirm('Are you sure?');">
                             <span class="glyphicon glyphicon-trash">Remove Stock</span>

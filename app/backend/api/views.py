@@ -48,7 +48,7 @@ def allStock(request):
     stock = Stock.objects.all()
     return render(request, 'api/allStock.html', {"stocks": stock})
 
-def stock(request, stock_id):
+def viewStock(request, stock_id):
     stock = get_object_or_404(Stock, id=stock_id)
     context = {"stock" : {
         "id": stock.id,
@@ -107,7 +107,7 @@ def addStock(request):
         quantity = request.POST.get("quantity")
         new_stock = Stock(vending_machine=vm, product_info=prod, quantity=quantity)
         new_stock.save()
-        return stock(request, new_stock.id)
+        return viewStock(request, new_stock.id)
     else:
         return HttpResponse("Method not allowed", status=405)
 
@@ -129,10 +129,6 @@ def deleteStock(request, stock_id):
     return index(request)
 
 #------------------------Update things------------------------
-def notNullUpdateFormField(form_field, model_field):
-    if form_field != None or form_field != '':
-        model_field = form_field
-    return model_field
 
 def updateVendingMachine(request, vending_id):
     #send form data to edit the vending machine
@@ -154,13 +150,34 @@ def updateVendingMachine(request, vending_id):
         vm.save()
         return vendingMachine(request, vm.id)
     else:
-        return HttpResponse("MEthod not allowed", status=405)
+        return HttpResponse("Method not allowed", status=405)
 
 def updateProduct(request, product_id):
     return HttpResponse("updateProduct")
 
 def updateStock(request, stock_id):
-    return HttpResponse("updateStock")
+    if request.method=="GET":
+        stock = get_object_or_404(Stock, id=stock_id)
+        vm = stock.vending_machine
+        prod = stock.product_info
+        context = {
+            "id": stock.id,
+            "building": vm.building,
+            "floor": vm.floor,
+            "location": vm.location,
+            "product": prod.name,
+            "quantity": stock.quantity,
+        }
+        return render(request, 'api/updateStock.html', context)
+    elif request.method=="POST":
+        #only allow updating of quanitity here
+        stock = get_object_or_404(Stock, id=stock_id)
+        stock.quantity = notNullUpdateFormField(request.POST.get("quantity"), stock.quantity)
+        stock.save()
+        return viewStock(request, stock.id)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+    ...
 
 #------------------------Utility------------------------
 """
@@ -176,3 +193,18 @@ def verifyProductNotInVendingMachine(product:Product, vending_machine:VendingMac
     if Stock.objects.filter(product_info=product, vending_machine=vending_machine).exists():
         return False
     return True
+
+
+"""
+Checks for an empty form field and updates the model field if not empty
+or returns the original value if it is empty
+args:
+    form_field: the form field to check
+    model_field: the model field to update
+returns:
+    the updated model field
+"""
+def notNullUpdateFormField(form_field, model_field):
+    if form_field != None or form_field != '':
+        model_field = form_field
+    return model_field

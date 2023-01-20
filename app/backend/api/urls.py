@@ -19,7 +19,7 @@ urlpatterns = [
     #-----------------------------stock endpoints-----------------------------
     path('stock/add/', views.addStock, name='addStock'),
     path('stock/view/', views.allStock, name='allStock'),
-    path('stock/view/<int:stock_id>', views.stock, name='stock'),
+    path('stock/view/<int:stock_id>', views.viewStock, name='stock'),
     path('stock/delete/<int:stock_id>', views.deleteStock, name='deleteStock'),
     path('stock/update/<int:stock_id>', views.updateStock, name='updateStock'),
 ]

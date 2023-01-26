@@ -100,9 +100,7 @@ def add_product(request):
 
 def add_stock(request):
     if request.method == "GET":
-        vm_id = 1
-        if request.GET.get("vending_machine_id") != None:
-            vm_id = request.GET.get("vending_machine_id")
+        vm_id = request.GET.get("vending_machine_id", default=1)
         all_vending_machines = VendingMachine.objects.all()
         all_products = Product.objects.all()
         return render(request, 'api/add_stock.html',

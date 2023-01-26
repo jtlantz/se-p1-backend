@@ -36,7 +36,7 @@ The entire project uses *Django* and it's built in frameworks. The database for 
 
 ### View specific Vending Machine
 ```html
-/api/vendingMachine/view/<int:vending_id>
+/api/machine/view/<int:vending_id>
 ```
 | Parameter | Type  | Description                           |
 |:----------|:------|:--------------------------------------|
@@ -76,7 +76,7 @@ The entire project uses *Django* and it's built in frameworks. The database for 
 
 ### Get the page to add a new machine, not necessary if using API only
 ```html
-GET /api/vendingMachine/add/
+GET /api/machine/add/
 ```
 
 ### Get the page to add a new product, not necessary if using API only
@@ -91,7 +91,7 @@ GET /api/stock/add/
 
 ### Add the vending machine
 ```html
-POST /api/vendingMachine/add/
+POST /api/machine/add/
 ```
 | Parameter | Type  | Description                               |
 |:----------|:------|:------------------------------------------|
@@ -126,7 +126,7 @@ POST /api/stock/add/
 
 ### Get the page to update the vending machine
 ```html
-GET /api/vendingMachine/update/<int:vending_id>
+GET /api/machine/update/<int:vending_id>
 ```
 
 ### Get the page to update the product
@@ -142,7 +142,7 @@ GET /api/stock/update/<int:stock_id>
 
 ### Edit the Vending machine
 ```html
-POST /api/vendingMachine/update/<int:vending_id>
+POST /api/machine/update/<int:vending_id>
 ```
 | Parameter | Type  | Description                               |
 |:----------|:------|:------------------------------------------|
@@ -177,7 +177,7 @@ POST /api/stock/update/<int:stock_id>
 
 ### Delete Vending machine
 ```html
-POST /api/vendingMachine/delete/<int:vending_id>
+POST /api/machine/delete/<int:vending_id>
 ```
 | Parameter | Type  | Description                           |
 |:----------|:------|:--------------------------------------|

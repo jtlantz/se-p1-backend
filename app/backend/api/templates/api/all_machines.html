@@ -20,7 +20,7 @@
                                     Building: {{ machine.building }}
                                     Floor: {{ machine.floor }}
                                     Location: {{ machine.location }}
-                                </h1>
+                                </h5>
 
                                 <body>
                                     {% if machine.stock %}
@@ -36,7 +36,7 @@
                                         <p>No stock found.</p>
                                     {% endif %}
                                 </body>
-                                <a href="/api/vendingMachine/view/{{ machine.id }}" class="stretched-link"></a>
+                                <a href="/api/machine/view/{{ machine.id }}" class="stretched-link"></a>
                             </div>
                         </div>
                     {% endfor %}

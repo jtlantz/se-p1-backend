@@ -3,7 +3,7 @@
 
 <div class="container rounded bg-white mt-5 mb-5 pt-5">
     <h2>Update Vending Machine</h2>
-    <form enctype='multipart/form-data' method="post" action="/api/vendingMachine/update/{{id}}"> {% csrf_token %}
+    <form enctype='multipart/form-data' method="post" action="/api/machine/update/{{id}}"> {% csrf_token %}
         <div class="form-outline mb-4">
             <input type="text" name="building" class="form-control form-control-lg" value="{{ building }}" autofocus="" maxlength="50"/>
         </div>

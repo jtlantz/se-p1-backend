@@ -225,9 +225,7 @@ def verify_product_not_in_vending_machine(product: Product, vending_machine: Ven
         True if the product IS NOT in the vending machine
         False if the product IS in the vending machine
     """
-    if Stock.objects.filter(product_info=product, vending_machine=vending_machine).exists():
-        return False
-    return True
+    return not Stock.objects.filter(product_info=product, vending_machine=vending_machine).exists()
 
 
 def not_null_update_form_field(form_field, model_field):

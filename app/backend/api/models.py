@@ -1,10 +1,4 @@
 from django.db import models
-import json
-
-
-def package_json_response(data: dict) -> dict:
-    return json.dumps(data)
-
 
 class VendingMachine(models.Model):
     """
@@ -17,17 +11,12 @@ class VendingMachine(models.Model):
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
 
-    def __repr__(self):
-        return package_json_response({
-            "id": self.id,
-            "building": self.building,
-            "floor": self.floor,
-            "location": self.location
-        })
+    def __repr__(self) -> dict:
+        return self.__str__()
 
     def __str__(self) -> str:
         return f"""
-        building: {self.building}, floor: {self.floor}, location: {self.location}
+        id: {self.id}, building: {self.building}, floor: {self.floor}, location: {self.location}
         """
 
 
@@ -43,17 +32,12 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     on_hand = models.IntegerField(default=0)
 
-    def __repr__(self):
-        return package_json_response({
-            "id": self.id,
-            "name": self.name,
-            "price": self.price,
-            "on_hand": self.on_hand
-        })
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def __str__(self) -> str:
         return f"""
-        name: {self.name}, price: {self.price}, on_hand: {self.on_hand}
+        id: {self.id}, name: {self.name}, price: {self.price}, on_hand: {self.on_hand}
         """
 
 
@@ -63,11 +47,8 @@ class Stock(models.Model):
     The current stock on hand inside the vending machine is in this table
     """
     id = models.AutoField(primary_key=True, unique=True)
-    # The vending machine that this stock is associated with
     vending_machine = models.ForeignKey(VendingMachine, on_delete=models.CASCADE)
-    # the name of the product can be inherited from the product table
     product_info = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # How much stock is currently in the vending machine
     quantity = models.IntegerField()
 
     def update_quantity(self, quantity: int):
@@ -75,14 +56,9 @@ class Stock(models.Model):
         self.save()
 
     def __repr__(self):
-        return package_json_response({
-            "id": self.id,
-            "quantity": self.quantity,
-            "location": {self.vending_machine},
-            "product_info": {self.product_info}
-        })
+        return self.__str__()
 
     def __str__(self) -> str:
         return f"""
-        product_info: { {self.product_info} }, quantity: {self.quantity}, location: { {self.vending_machine} }
+        id: {self.id}, product_info: { {self.product_info} }, quantity: {self.quantity}, location: { {self.vending_machine} }
         """

@@ -1,0 +1,37 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    - id: trailing-whitespace
+    - id: end-of-file-fixer
+      exclude: ^.*\.ipynb
+    - id: check-yaml
+    - id: check-added-large-files
+    - id: check-toml
+    - id: detect-private-key
+    - id: check-ast
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-annotations
+          - flake8-docstrings
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+    -   id: black
+    # https://github.com/psf/black/issues/438#issuecomment-522114098
+        exclude: ^.+\/migrations\/.+
+
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black-jupyter
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+    - id: isort

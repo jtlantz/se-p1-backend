@@ -1,6 +1,12 @@
+import os
+import django
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
+django.setup()
+
 from django.test import TestCase
-from .views import *
-from .models import *
+from api.models import VendingMachine, Product, Stock
+
 
 # Create your tests here.
 
@@ -15,12 +21,24 @@ class TestCreateVendingMachine(TestCase):
         vm = VendingMachine(building=TEST_BUILDING, floor=TEST_FLOOR, location=TEST_LOCATION)
         vm.save()
 
-
     def test_vending_machine_created(self):
         vm = VendingMachine.objects.get(building=TEST_BUILDING)
         self.assertTrue(vm.building == TEST_BUILDING)
         self.assertTrue(vm.floor == TEST_FLOOR)
         self.assertTrue(vm.location == TEST_LOCATION)
+
+    def test_vending_machine_str(self):
+        vm = VendingMachine.objects.get(building=TEST_BUILDING)
+        self.assertEqual(str(vm), f"""
+        id: {vm.id}, building: {TEST_BUILDING}, floor: {TEST_FLOOR}, location: {TEST_LOCATION}
+        """)
+    
+    def test_vending_machine_repr(self):
+        vm = VendingMachine.objects.get(building=TEST_BUILDING)
+        self.assertEqual(repr(vm), f"""
+        id: {vm.id}, building: {TEST_BUILDING}, floor: {TEST_FLOOR}, location: {TEST_LOCATION}
+        """
+        )
 
 
 TEST_PRODUCT = "test product"

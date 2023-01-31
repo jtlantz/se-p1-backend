@@ -1,6 +1,8 @@
 from django.test import TestCase
+
 from .views import *
 from .models import *
+
 
 # Create your tests here.
 

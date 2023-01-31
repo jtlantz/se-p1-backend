@@ -351,3 +351,5 @@ poetry.toml
 
 
 _trial_temp/
+
+.idea/

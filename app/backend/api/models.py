@@ -47,11 +47,8 @@ class Stock(models.Model):
     The current stock on hand inside the vending machine is in this table
     """
     id = models.AutoField(primary_key=True, unique=True)
-    # The vending machine that this stock is associated with
     vending_machine = models.ForeignKey(VendingMachine, on_delete=models.CASCADE)
-    # the name of the product can be inherited from the product table
     product_info = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # How much stock is currently in the vending machine
     quantity = models.IntegerField()
 
     def update_quantity(self, quantity: int):
@@ -59,12 +56,7 @@ class Stock(models.Model):
         self.save()
 
     def __repr__(self):
-        return {
-            "id": self.id,
-            "quantity": self.quantity,
-            "location": {self.vending_machine},
-            "product_info": {self.product_info}
-        }
+        return self.__str__()
 
     def __str__(self) -> str:
         return f"""

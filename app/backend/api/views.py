@@ -61,7 +61,7 @@ def get_machine(request: HttpRequest, vending_id: int) -> HttpResponse:
         "location": vm.location,
         "stock": stock,
     }
-    return render(request, "api/machine.html", context)
+    return render(request, "api/machine.html", context, status=200)
 
 
 def get_all_products(request: HttpRequest) -> HttpResponse:

@@ -138,7 +138,7 @@ def get_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
             "quantity": stock.quantity,
         }
     }
-    return render(request, "api/stock.html", context)
+    return render(request, "api/stock.html", context, status=200)
 
 
 # ------------------------Add things------------------------

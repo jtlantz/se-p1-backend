@@ -1,14 +1,27 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-# Create your views here.
-
-from api.models import VendingMachine, Product, Stock
-
+from api.models import Product, Stock, VendingMachine
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
 
 # ------------------------Get/view things------------------------
 
 
-def get_all_machines(request):
+def get_all_machines(request: HttpRequest) -> HttpResponse:
+    """
+    Get all the vending machines in the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        machines (list): A list of vending machines.
+        for each machine:
+            id (int): The id of the vending machine.
+            building (str): The building the vending machine is in.
+            floor (int): The floor the vending machine is on.
+            location (str): The room the vending machine is in.
+            stock (list): The stock in the vending machine.
+    """
     machines = VendingMachine.objects.all()
     stock_in_machine = [
         {
@@ -16,14 +29,29 @@ def get_all_machines(request):
             "building": machine.building,
             "floor": machine.floor,
             "location": machine.location,
-            "stock": Stock.objects.filter(vending_machine=machine)
+            "stock": Stock.objects.filter(vending_machine=machine),
         }
         for machine in machines
     ]
-    return render(request, 'api/all_machines.html', {"machines": stock_in_machine})
+    return render(request, "api/all_machines.html", {"machines": stock_in_machine})
 
 
-def get_machine(request, vending_id):
+def get_machine(request: HttpRequest, vending_id: int) -> HttpResponse:
+    """
+    Get a specific vending machine based on the id.
+
+    Args:
+        request (HttpRequest): The request object.
+        vending_id (int): The id of the vending machine.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        id (int): The id of the vending machine.
+        building (str): The building the vending machine is in.
+        floor (int): The floor the vending machine is on.
+        location (str): The room the vending machine is in.
+        stock (list): The stock in the vending machine.
+    """
     vm = get_object_or_404(VendingMachine, id=vending_id)
     stock = Stock.objects.filter(vending_machine=vm)
     context = {
@@ -33,44 +61,100 @@ def get_machine(request, vending_id):
         "location": vm.location,
         "stock": stock,
     }
-    return render(request, 'api/machine.html', context)
+    return render(request, "api/machine.html", context)
 
 
-def get_all_products(request):
+def get_all_products(request: HttpRequest) -> HttpResponse:
+    """
+    Get all the products in the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        products (list): A list of products.
+    """
     products = Product.objects.all()
-    return render(request, 'api/all_products.html', {"products": products})
+    return render(request, "api/all_products.html", {"products": products})
 
 
-def get_product(request, product_id):
+def get_product(request: HttpRequest, product_id: int) -> HttpResponse:
+    """
+    Get a specific product based on the id.
+
+    Args:
+        request (HttpRequest): The request object.
+        product_id (int): The id of the product.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        id (int): The id of the product.
+        name (str): The name of the product.
+        price (float): The price of the product.
+        on_hand (int): The number of the product in stock.
+    """
     product = get_object_or_404(Product, id=product_id)
     context = {"product": product}
-    # TODO: Find locations where this stock is at and display it as well
-    context["locations"] = {}
-    return render(request, 'api/product.html', context)
+    return render(request, "api/product.html", context)
 
 
-def get_all_stock(request):
+def get_all_stock(request: HttpRequest) -> HttpResponse:
+    """
+    Get all the stock in the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        stocks (list): A list of stock.
+    """
     stock = Stock.objects.all()
-    return render(request, 'api/all_stock.html', {"stocks": stock})
+    return render(request, "api/all_stock.html", {"stocks": stock})
 
 
-def get_stock(request, stock_id):
+def get_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
+    """
+    Get a specific stock based on the id.
+
+    Args:
+        request (HttpRequest): The request object.
+        stock_id (int): The id of the stock.
+    Returns:
+        HttpResponse: The response object.
+    Payload:
+        id (int): The id of the stock.
+        product (Product): The product in the stock.
+        vending_machine (VendingMachine): The vending machine the stock is in.
+        quantity (int): The quantity of the stock.
+    """
     stock = get_object_or_404(Stock, id=stock_id)
-    context = {"stock": {
-        "id": stock.id,
-        "product": stock.product_info,
-        "vending_machine": stock.vending_machine,
-        "quantity": stock.quantity,
-    }}
-    return render(request, 'api/stock.html', context)
+    context = {
+        "stock": {
+            "id": stock.id,
+            "product": stock.product_info,
+            "vending_machine": stock.vending_machine,
+            "quantity": stock.quantity,
+        }
+    }
+    return render(request, "api/stock.html", context)
 
 
 # ------------------------Add things------------------------
 
 
-def add_vending_machine(request):
+def add_vending_machine(request: HttpRequest) -> HttpResponse:
+    """
+    Add a vending machine to the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Vending Machine page.
+    """
     if request.method == "GET":
-        return render(request, 'api/add_vending_machine.html')
+        return render(request, "api/add_vending_machine.html")
     elif request.method == "POST":
         building = request.POST.get("building")
         floor = request.POST.get("floor")
@@ -81,12 +165,20 @@ def add_vending_machine(request):
         return get_machine(request, new_vm.id)
     else:
         # return a 405 error
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
-def add_product(request):
+def add_product(request: HttpRequest) -> HttpResponse:
+    """
+    Add a product to the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Product page.
+    """
     if request.method == "GET":
-        return render(request, 'api/add_product.html')
+        return render(request, "api/add_product.html")
     elif request.method == "POST":
         name = request.POST.get("name")
         price = request.POST.get("price")
@@ -95,19 +187,27 @@ def add_product(request):
         new_prod.save()
         return get_product(request, new_prod.id)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
-def add_stock(request):
+def add_stock(request: HttpRequest) -> HttpResponse:
+    """
+    Add stock to the database.
+
+    Args:
+        request (HttpRequest): The request object.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Stock page.
+    """
     if request.method == "GET":
         vm_id = request.GET.get("vending_machine_id", default=1)
         all_vending_machines = VendingMachine.objects.all()
         all_products = Product.objects.all()
-        return render(request, 'api/add_stock.html',
-                      {"default_id": vm_id,
-                       "vending_machines": all_vending_machines,
-                       "products": all_products
-                       })
+        return render(
+            request,
+            "api/add_stock.html",
+            {"default_id": vm_id, "vending_machines": all_vending_machines, "products": all_products},
+        )
     elif request.method == "POST":
         vm = get_object_or_404(VendingMachine, id=request.POST.get("vending_machine"))
         prod = get_object_or_404(Product, id=request.POST.get("product"))
@@ -118,25 +218,52 @@ def add_stock(request):
         new_stock.save()
         return get_stock(request, new_stock.id)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
 # ------------------------Delete things------------------------
 
 
-def delete_vending_machine(request, vending_id):
+def delete_vending_machine(request: HttpRequest, vending_id: int) -> HttpResponse:
+    """
+    Delete a vending machine from the database.
+
+    Args:
+        request (HttpRequest): The request object.
+        vending_id (int): The id of the vending machine.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Home Page.
+    """
     vm = get_object_or_404(VendingMachine, id=vending_id)
     vm.delete()
     return get_all_machines(request)
 
 
-def delete_product(request, product_id):
+def delete_product(request: HttpRequest, product_id: int) -> HttpResponse:
+    """
+    Delete a product from the database.
+
+    Args:
+        request (HttpRequest): The request object.
+        product_id (int): The id of the product.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Home Page.
+    """
     product = get_object_or_404(Product, id=product_id)
     product.delete()
     return get_all_machines(request)
 
 
-def delete_stock(request, stock_id):
+def delete_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
+    """
+    Delete stock from the database.
+
+    Args:
+        request (HttpRequest): The request object.
+        stock_id (int): The id of the stock.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Home Page.
+    """
     stock = get_object_or_404(Stock, id=stock_id)
     stock.delete()
     return get_all_machines(request)
@@ -145,8 +272,24 @@ def delete_stock(request, stock_id):
 # ------------------------Update things------------------------
 
 
-def update_vending_machine(request, vending_id):
-    # send form data to edit the vending machine
+def update_vending_machine(request: HttpRequest, vending_id: int) -> HttpResponse:
+    """
+    Update a vending machine in the database.
+
+    If the request is a GET, then the user is being redirected to the update page.
+    If the request is a POST, then the user is submitting the update form.
+    Form fields that are empty will not be updated.
+
+    Valid Form fields:
+        building (str): The building the vending machine is in.
+        floor (str): The floor the vending machine is on.
+        location (str): The location of the vending machine.
+    Args:
+        request (HttpRequest): The request object.
+        vending_id (int): The id of the vending machine.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Vending Machine page.
+    """
     if request.method == "GET":
         vm = get_object_or_404(VendingMachine, id=vending_id)
         context = {
@@ -155,7 +298,7 @@ def update_vending_machine(request, vending_id):
             "floor": vm.floor,
             "location": vm.location,
         }
-        return render(request, 'api/update_vending_machine.html', context)
+        return render(request, "api/update_vending_machine.html", context)
 
     elif request.method == "POST":
         vm = get_object_or_404(VendingMachine, id=vending_id)
@@ -165,10 +308,26 @@ def update_vending_machine(request, vending_id):
         vm.save()
         return get_machine(request, vm.id)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
-def update_product(request, product_id):
+def update_product(request: HttpRequest, product_id: int) -> HttpResponse:
+    """
+    Update a product in the database.
+
+    If the request is a GET, then the user is being redirected to the update page.
+    If the request is a POST, then the user is submitting the update form.
+    Form fields that are empty will not be updated.
+
+    Valid Form fields:
+        price (str): The price of the product.
+        on_hand (str): The quantity of the product on hand.
+    Args:
+        request (HttpRequest): The request object.
+        product_id (int): The id of the product.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Product page.
+    """
     if request.method == "GET":
         prod = get_object_or_404(Product, id=product_id)
         context = {
@@ -177,7 +336,7 @@ def update_product(request, product_id):
             "price": prod.price,
             "on_hand": prod.on_hand,
         }
-        return render(request, 'api/update_product.html', context)
+        return render(request, "api/update_product.html", context)
     elif request.method == "POST":
         prod = get_object_or_404(Product, id=product_id)
         prod.price = not_null_update_form_field(request.POST.get("price"), prod.price)
@@ -185,10 +344,25 @@ def update_product(request, product_id):
         prod.save()
         return get_product(request, prod.id)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
-def update_stock(request, stock_id):
+def update_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
+    """
+    Update stock in the database.
+
+    If the request is a GET, then the user is being redirected to the update page.
+    If the request is a POST, then the user is submitting the update form.
+    Form fields that are empty will not be updated.
+
+    Valid Form fields:
+        quantity (str): The quantity of the product in the vending machine.
+    Args:
+        request (HttpRequest): The request object.
+        stock_id (int): The id of the stock.
+    Returns:
+        HttpResponse: The response object. A Redirect to the Stock page.
+    """
     if request.method == "GET":
         stock = get_object_or_404(Stock, id=stock_id)
         vm = stock.vending_machine
@@ -201,7 +375,7 @@ def update_stock(request, stock_id):
             "product": prod.name,
             "quantity": stock.quantity,
         }
-        return render(request, 'api/update_stock.html', context)
+        return render(request, "api/update_stock.html", context)
     elif request.method == "POST":
         # only allow updating of quantity here
         stock = get_object_or_404(Stock, id=stock_id)
@@ -209,7 +383,7 @@ def update_stock(request, stock_id):
         stock.save()
         return get_stock(request, stock.id)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return RESPONSE_CODE_405
 
 
 # ------------------------Utility------------------------
@@ -217,27 +391,31 @@ def update_stock(request, stock_id):
 
 def verify_product_not_in_vending_machine(product: Product, vending_machine: VendingMachine) -> bool:
     """
-    Verifies if the current product is in the vending machine already
-    args:
+    Verify if the current product is in the vending machine already.
+
+    Args:
         product: Product object
         vending_machine: VendingMachine object
-    returns:
+    Returns:
         True if the product IS NOT in the vending machine
         False if the product IS in the vending machine
     """
     return not Stock.objects.filter(product_info=product, vending_machine=vending_machine).exists()
 
 
-def not_null_update_form_field(form_field, model_field):
+def not_null_update_form_field(form_field: str, model_field: any) -> str:
     """
-    Checks for an empty form field and updates the model field if not empty
-    or returns the original value if it is empty
-    args:
+    Check for an empty form field and updates the model field if not empty.
+
+    Args:
         form_field: the form field to check
         model_field: the model field to update
-    returns:
+    Returns:
         the updated model field
     """
-    if form_field is not None or form_field != '':
+    if form_field is not None or form_field != "":
         model_field = form_field
     return model_field
+
+
+RESPONSE_CODE_405 = HttpResponse("Method not allowed", status=405)

@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_DB=db    
+      - POSTGRES_DB=db
     ports:
       - '8000:8000'
 volumes:

@@ -8,7 +8,7 @@ env:
   REGISTRY: ghcr.io
   BASE_IMG_NAME: ${{ github.repository }}
 jobs:
-  build:
+  build-backend-container:
     runs-on: ubuntu-latest
     permissions:
       contents: read

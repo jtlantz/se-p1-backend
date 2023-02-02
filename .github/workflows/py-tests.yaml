@@ -90,6 +90,11 @@ jobs:
         run: poetry install
 
       - name: Migrate Django Database
+        env:
+          # The Hostname is contained inside the tests.py file
+          POSTGRES_DB: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
         run: |
           poetry run app/backend/manage.py migrate
       - name: Test with Pytest

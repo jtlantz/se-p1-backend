@@ -41,7 +41,7 @@ jobs:
   test-and-coverage:
     runs-on: ubuntu-20.04
 
-    # Service containers to run with `container-job`
+    # Service containers to run with `test-and-coverage`
     services:
       # Label used to access the service container
       db:
@@ -57,6 +57,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      ports:
+        - 5432:5432
 
     steps:
       # Downloads a copy of the code in your repository before running CI tests

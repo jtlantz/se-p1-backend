@@ -41,7 +41,7 @@ jobs:
   test-and-coverage:
     runs-on: ubuntu-20.04
 
-    # Service containers to run with `container-job`
+    # Service containers to run with `test-and-coverage`
     services:
       # Label used to access the service container
       db:
@@ -51,12 +51,16 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgrespw
+          POSTGRES_DB: mydatabase
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - "5432:5432"
 
     steps:
       # Downloads a copy of the code in your repository before running CI tests
@@ -67,7 +71,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Install Poetry
         run: |
           curl -sL https://install.python-poetry.org | POETRY_VERSION=${{ env.POETRY_VERSION }} python - -y
@@ -86,9 +89,18 @@ jobs:
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: poetry install
 
+      - name: Migrate Django Database
+        env:
+          # The Hostname is contained inside the tests.py file
+          POSTGRES_DB: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+        run: |
+          poetry run app/backend/manage.py migrate
       - name: Test with Pytest
         env:
           # The Hostname is contained inside the tests.py file
+          POSTGRES_DB: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
         run: |

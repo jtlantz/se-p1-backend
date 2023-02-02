@@ -1,7 +1,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jtlantz_se-p1-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jtlantz_se-p1-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jtlantz_se-p1-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=jtlantz_se-p1-backend)
 
-# Contents 
+# Contents
 
 - [Initial Repository Setup](#initial-repository-setup)
 

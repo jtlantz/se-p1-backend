@@ -9,7 +9,7 @@
                     <h2 class="text-uppercase text-center mb-5">Admin Panel</h2>
                     {%if stocks %}
                     {% for stock in stocks %}
-                    
+
                     <div class="card mb-5" style="border-radius: 15px;">
                         <ul>
                             <li>Name: {{ stock.product_info.name }}</li>
@@ -29,9 +29,9 @@
                             </button>
                         </a>
                     </div>
-                    
+
                     {% endfor %}
-                    
+
                     {% else %}
                     <div class="card mb-5" style="border-radius: 15px;">
                         <p>No stocks found.</p>

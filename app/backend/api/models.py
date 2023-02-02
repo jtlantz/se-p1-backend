@@ -1,64 +1,115 @@
 from django.db import models
 
+
 class VendingMachine(models.Model):
     """
-    Each vending machine has a unique ID to identify the vending machine, this is auto generated
-    More information associated with the vending machine but the required info is listed below
-    More information may be added later on
+    Vending machine class model for database.
+
+    Each vending machine is defined here.
+    Create the vending machine with the building, floor and location
+    Args:
+        building (str): The building name
+        floor (int): The floor number
+        location (str): The room number
+
+    Class Attributes:
+        id (int): The id of the vending machine is automatically assigned
+        building (str): The building name
+        floor (int): The floor number
+        location (str): The room number
     """
+
     id = models.AutoField(primary_key=True, unique=True)
     building = models.CharField(max_length=50)
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
 
-    def __repr__(self) -> dict:
+    def __repr__(self) -> str:  # noqa: D105
         return self.__str__()
 
-    def __str__(self) -> str:
-        return f"""
-        id: {self.id}, building: {self.building}, floor: {self.floor}, location: {self.location}
-        """
+    def __str__(self) -> str:  # noqa: D105
+        return f"""\
+id: {self.id}, \
+building: {self.building}, \
+floor: {self.floor}, \
+location: {self.location}\
+"""
 
 
 class Product(models.Model):
     """
-    Each product, e.g. Snickers, Aquarius, etc... is defined here.
-    This is indented to indicate the product that we have on hand in total
-    The stock(on_hand) here DOES NOT mean we have this stock in a certain vending machine
-    This is just a list of on-hand stock
+    Product class model for database.
+
+    Each product is defined here.
+    Create the product with the name, price and on hand
+    Args:
+        name (str): The name of the product
+        price (float): The price of the product
+        on_hand (int): The number of products on hand
+
+    Class Attributes:
+        id (int): The id of the product is automatically assigned
+        name (str): The name of the product
+        price (float): The price of the product
+        on_hand (int): The number of products on hand
     """
+
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     on_hand = models.IntegerField(default=0)
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:  # noqa: D105
         return self.__str__()
 
-    def __str__(self) -> str:
-        return f"""
-        id: {self.id}, name: {self.name}, price: {self.price}, on_hand: {self.on_hand}
-        """
+    def __str__(self) -> str:  # noqa: D105
+        return f"""\
+id: {self.id}, \
+name: {self.name}, \
+price: {self.price}, \
+on_hand: {self.on_hand}\
+"""
 
 
 class Stock(models.Model):
     """
-    The stock is an association between the vending machine and the product
-    The current stock on hand inside the vending machine is in this table
+    Stock class model for database.
+
+    Each stock is defined here.
+    Create the stock with the vending machine, product and quantity
+    Args:
+        vending_machine (VendingMachine): The vending machine
+        product_info (Product): The product
+        quantity (int): The amount of product in the vending machine
+    Class Attributes:
+        id (int): The id of the stock is automatically assigned
+        vending_machine (VendingMachine): The vending machine
+        product_info (Product): The product
+        quantity (int): The amount of product in the vending machine
     """
+
     id = models.AutoField(primary_key=True, unique=True)
     vending_machine = models.ForeignKey(VendingMachine, on_delete=models.CASCADE)
     product_info = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def update_quantity(self, quantity: int):
+        """
+        Update the quantity of the stock.
+
+        Args:
+            quantity (int): The amount of product in the vending machine
+        """
         self.quantity = quantity
         self.save()
 
-    def __repr__(self):
+    def __repr__(self) -> str:  # noqa: D105
         return self.__str__()
 
-    def __str__(self) -> str:
-        return f"""
-        id: {self.id}, product_info: { {self.product_info} }, quantity: {self.quantity}, location: { {self.vending_machine} }
-        """
+    def __str__(self) -> str:  # noqa: D105
+        return f"""\
+id: {self.id}, \
+product_info: { {self.product_info} }, \
+quantity: {self.quantity}, \
+location: { {self.vending_machine} }\
+"""

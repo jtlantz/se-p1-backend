@@ -71,9 +71,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Migrate Django Database
-        run: |
-          python3 app/backend/manage.py migrate
       - name: Install Poetry
         run: |
           curl -sL https://install.python-poetry.org | POETRY_VERSION=${{ env.POETRY_VERSION }} python - -y
@@ -92,6 +89,9 @@ jobs:
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: poetry install
 
+      - name: Migrate Django Database
+        run: |
+          python3 app/backend/manage.py migrate
       - name: Test with Pytest
         env:
           # The Hostname is contained inside the tests.py file

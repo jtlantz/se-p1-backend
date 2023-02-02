@@ -91,6 +91,7 @@ jobs:
 
       - name: Migrate Django Database
         run: |
+          pip3 install django
           python3 app/backend/manage.py migrate
       - name: Test with Pytest
         env:

@@ -51,6 +51,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgrespw
+          POSTGRES_DB: mydatabase
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -92,6 +93,7 @@ jobs:
       - name: Test with Pytest
         env:
           # The Hostname is contained inside the tests.py file
+          POSTGRES_HOST: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
         run: |

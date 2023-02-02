@@ -1,6 +1,7 @@
 import os
 import django
 
+os.environ.setdefault('POSTGRES_DB', 'localhost')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
 django.setup()
 

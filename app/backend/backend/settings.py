@@ -74,22 +74,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mydatabase',
         'USER': 'postgres',
         'PASSWORD': 'postgrespw',
-        'HOST': "localhost",
+        'HOST': os.environ.get('POSTGRES_DB'),
         'PORT': '5432',
     }
 }
 
-import sys
-if 'test' in sys.argv or 'test_coverage' in sys.argv or 'pytest' in sys.argv: #Covers regular testing and django-coverage
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
-    DATABASES['default']['NAME'] = ':memory:'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -5,10 +5,10 @@
     <h2>Update Stock</h2>
     <form enctype='multipart/form-data' method="post" action="/api/stock/update/{{id}}"> {% csrf_token %}
         <div class="text-center">
-            Bld: {{building}} Floor: {{floor}} Location: {{location}}
+            Bld: {{vending_machine.building}} Floor: {{vending_machine.floor}} Location: {{vending_machine.location}}
         </div>
         <div class="text-center">
-            Product : {{product}}
+            Product : {{product_info.name}}
         </div>
         <div class="form-outline mb-4">
             Quantity:

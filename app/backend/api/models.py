@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms.models import model_to_dict
 
 
 class VendingMachine(models.Model):
@@ -23,6 +24,15 @@ class VendingMachine(models.Model):
     building = models.CharField(max_length=50)
     floor = models.IntegerField()
     location = models.CharField(max_length=50)
+
+    def as_dict(self) -> dict:
+        """
+        Return the vending machine as a dictionary.
+
+        Returns:
+            dict: The vending machine as a dictionary
+        """
+        return model_to_dict(self)
 
     def __repr__(self) -> str:  # noqa: D105
         return self.__str__()
@@ -58,6 +68,15 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     on_hand = models.IntegerField(default=0)
+
+    def as_dict(self) -> dict:
+        """
+        Return the product as a dictionary.
+
+        Returns:
+            dict: The product as a dictionary
+        """
+        return model_to_dict(self)
 
     def __repr__(self) -> str:  # noqa: D105
         return self.__str__()
@@ -102,6 +121,22 @@ class Stock(models.Model):
         """
         self.quantity = quantity
         self.save()
+
+    def as_dict(self) -> dict:
+        """
+        Return the stock as a dictionary.
+
+        Returns:
+            dict: The stock as a dictionary
+        """
+        vm = self.vending_machine.as_dict()
+        product = self.product_info.as_dict()
+        return {
+            "id": self.id,
+            "vending_machine": vm,
+            "product_info": product,
+            "quantity": self.quantity,
+        }
 
     def __repr__(self) -> str:  # noqa: D105
         return self.__str__()

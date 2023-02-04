@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "automated_clean_code"
+name = "se-p1-backend"
 version = "0.1.0"
 description = ""
 authors = ["The Gang Technology"]

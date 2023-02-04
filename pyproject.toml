@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "se-p1-backend"
+name = "app"
 version = "0.1.0"
 description = ""
 authors = ["The Gang Technology"]

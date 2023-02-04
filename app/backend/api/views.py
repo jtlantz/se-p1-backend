@@ -22,6 +22,8 @@ def get_all_machines(request: HttpRequest) -> HttpResponse:
             location (str): The room the vending machine is in.
             stock (list): The stock in the vending machine.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
     machines = VendingMachine.objects.all()
     stock_in_machine = []
     for machine in machines:
@@ -55,6 +57,10 @@ def get_machine(request: HttpRequest, vending_id: int) -> HttpResponse:
         location (str): The room the vending machine is in.
         stock (list): The stock in the vending machine.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
+    if request.method != "GET":
+        return JsonResponse({"error": "Invalid method."}, status=405)
     vm = get_object_or_404(VendingMachine, id=vending_id)
     stock = get_stocks_in_machine_as_list(vm)
     context = {
@@ -78,6 +84,8 @@ def get_all_products(request: HttpRequest) -> HttpResponse:
     Payload:
         products (list): A list of products.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
     products = [product.as_dict() for product in Product.objects.all()]
     return request_on_content_type(request, "api/all_products.html", {"products": products})
 
@@ -97,6 +105,8 @@ def get_product(request: HttpRequest, product_id: int) -> HttpResponse:
         price (float): The price of the product.
         on_hand (int): The number of the product in stock.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
     product = get_object_or_404(Product, id=product_id).as_dict()
     context = {"product": product}
     return request_on_content_type(request, "api/product.html", context)
@@ -113,6 +123,8 @@ def get_all_stock(request: HttpRequest) -> HttpResponse:
     Payload:
         stocks (list): A list of stock.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
     stock = [stock.as_dict() for stock in Stock.objects.all()]
     return request_on_content_type(request, "api/all_stock.html", {"stocks": stock})
 
@@ -132,6 +144,8 @@ def get_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
         vending_machine (VendingMachine): The vending machine the stock is in.
         quantity (int): The quantity of the stock.
     """
+    if request.method != "GET":
+        return RESPONSE_CODE_405
     stock = get_object_or_404(Stock, id=stock_id).as_dict()
     return request_on_content_type(request, "api/stock.html", {"stock": stock})
 
@@ -159,6 +173,7 @@ def add_vending_machine(request: HttpRequest) -> HttpResponse:
         location = request.POST.get("location")
         new_vm = VendingMachine(building=building, floor=floor, location=location)
         new_vm.save()
+        request.method = "GET"
         return get_machine(request, new_vm.id)
     else:
         return RESPONSE_CODE_405
@@ -181,6 +196,7 @@ def add_product(request: HttpRequest) -> HttpResponse:
         on_hand = request.POST.get("on_hand")
         new_prod = Product(name=name, price=price, on_hand=on_hand)
         new_prod.save()
+        request.method = "GET"
         return get_product(request, new_prod.id)
     else:
         return RESPONSE_CODE_405
@@ -212,6 +228,7 @@ def add_stock(request: HttpRequest) -> HttpResponse:
         quantity = request.POST.get("quantity")
         new_stock = Stock(vending_machine=vm, product_info=prod, quantity=quantity)
         new_stock.save()
+        request.method = "GET"
         return get_stock(request, new_stock.id)
     else:
         return RESPONSE_CODE_405
@@ -234,6 +251,7 @@ def delete_vending_machine(request: HttpRequest, vending_id: int) -> HttpRespons
         return RESPONSE_CODE_405
     vm = get_object_or_404(VendingMachine, id=vending_id)
     vm.delete()
+    request.method = "GET"
     return get_all_machines(request)
 
 
@@ -251,6 +269,7 @@ def delete_product(request: HttpRequest, product_id: int) -> HttpResponse:
         return RESPONSE_CODE_405
     product = get_object_or_404(Product, id=product_id)
     product.delete()
+    request.method = "GET"
     return get_all_machines(request)
 
 
@@ -268,6 +287,7 @@ def delete_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
         return RESPONSE_CODE_405
     stock = get_object_or_404(Stock, id=stock_id)
     stock.delete()
+    request.method = "GET"
     return get_all_machines(request)
 
 
@@ -302,6 +322,7 @@ def update_vending_machine(request: HttpRequest, vending_id: int) -> HttpRespons
         vm.floor = not_null_update_form_field(request.POST.get("floor"), vm.floor)
         vm.location = not_null_update_form_field(request.POST.get("location"), vm.location)
         vm.save()
+        request.method = "GET"
         return get_machine(request, vm.id)
     else:
         return RESPONSE_CODE_405
@@ -338,6 +359,7 @@ def update_product(request: HttpRequest, product_id: int) -> HttpResponse:
         prod.price = not_null_update_form_field(request.POST.get("price"), prod.price)
         prod.on_hand = not_null_update_form_field(request.POST.get("on_hand"), prod.on_hand)
         prod.save()
+        request.method = "GET"
         return get_product(request, prod.id)
     else:
         return RESPONSE_CODE_405
@@ -367,6 +389,7 @@ def update_stock(request: HttpRequest, stock_id: int) -> HttpResponse:
         stock = get_object_or_404(Stock, id=stock_id)
         stock.quantity = not_null_update_form_field(request.POST.get("quantity"), stock.quantity)
         stock.save()
+        request.method = "GET"
         return get_stock(request, stock.id)
     else:
         return RESPONSE_CODE_405
